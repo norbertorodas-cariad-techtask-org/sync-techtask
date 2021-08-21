@@ -1,0 +1,37 @@
+* Techtask objective: Find a way to setup and synchronize Users and groups between Keycloak, GitHub and Artifactory
+* Timeline: from now until August 29th 2021
+* The tech task is divided into an implementation and a documentation part.
+* One can choose between two alternatives.
+* It is not important to get everything done and working (but would be cool). It is important to show us your thoughts and approaches.
+* There might be a hidden issue in the task description. If so, describe the found issue and a possible solution / workaround / upgade.
+* Details:
+
+  * Alternative A:
+    * Setup a PoC including
+      
+      * Optional Kubernetes cluster
+      * Keycloak (optional within Kubernetes)
+      * Some local users and groups (readers, writers, maintainers, external suppliers [optional]) already existing and manually added in Keycloak (assuming the tool is connected to an IDP/LDAP/etc. which is not part of the tech task)
+      * GitHub organization connected to keycloak for user auth and group sync via SAML
+      * Artifactory [OSS or CPP version] (optional within Kubernetes) connected to Keycloak for user auth and group sync
+    
+    * Implement “Creator/Synchronizer” (use the framework of your choice and use whatever helper are available on GitHub, but take care of the OSS licenses) which
+ 
+      * Synchronizes the groups from Keycloak into GitHub org (define a suitable mapping for readers, writers, maintainers, external suppliers [optional]) à error handling can be commented like “check here for duplicated user”
+      * Creates a repository, synchronizes groups, sets up permission targets in Artifactory via RESTApi using GitHub issue ops (issue content evaluation optional, on-new-issue would be sufficient enough) based on the groups used and defined for GitHub org (GitHub org reader ó Artifactory reader, GitHub org writer ó Artifactory org writer, etc.)
+      * User story: “User creates an issue in an existing repo within the org and the algorithm/bot does the job behind the scenes to get a repository within Artifactory with appropriate permissions”
+
+  * Alternative B
+    * Like “A” but, if you are new to Keycloak you can also use the “fast path” by direct interaction between GitHub org and Artifactory
+    
+      * Read existing users from GitHub org members/roles/teams/outside collaborators,
+      * map them to user groups
+      * on new issue, create Artifactory repos, groups, etc. with the given information
+
+* Assumption:
+    * Everything as code available on github.com under permissive license
+    
+* Create a concept documentation describing
+  * The implementation details (don’t copy the code, just a fluent description of your thoughts) à describe the how
+  * Architectural decisions, tool selections, security concerns, etc. à describe the “why”
+  * Everything else which can be interesting
